@@ -1,0 +1,9 @@
+#%Module1.0
+module-whatis "fsl"
+module-whatis "Version: VERSION"
+prepend-path PATH /opt/fsl/bin
+setenv  FSLDIR /opt/fsl
+setenv FSLOUTPUTTYPE NIFTI_GZ
+setenv FSLMULTIFILEQUIT TRUE
+setenv FSLTCLSH /opt/fsl/bin/fsltclsh
+setenv FSLWISH /opt/fsl/bin/fslwish
