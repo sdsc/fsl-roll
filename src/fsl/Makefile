@@ -76,7 +76,7 @@ DESCRIPTION:
 build: $(SRC_DIRS)
 	mkdir -p build-fsl
 	python fslinstaller.py -f $(SOURCE_PKG) --nomd5 -d  $(PWD)/build-fsl
-	/usr/sbin/prelink -u $(PWD)/build-fsl/*.so
+	/usr/sbin/prelink -u $(PWD)/build-fsl/lib/*so*
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
