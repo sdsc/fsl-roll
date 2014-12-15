@@ -76,7 +76,7 @@ build: $(SRC_DIRS)
        
 	
 install::
-	mkdir -p $(ROOT)
+	mkdir -p $(ROOT)/$(PROOT)
 	( \
             python fslinstaller.py -f $(SOURCE_PKG) --nomd5 -d $(ROOT)/$(PROOT) \
 	)
