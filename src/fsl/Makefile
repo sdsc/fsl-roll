@@ -75,7 +75,7 @@ DESCRIPTION:
 
 build: $(SRC_DIRS)
 	mkdir -p $(REDHAT.ROOT)/src/build-fsl
-	python fslinstaller.py -f $(SOURCE_PKG) --nomd5 -d  mkdir -p `dirname $(PWD)'/build-fsl
+	python fslinstaller.py -f $(SOURCE_PKG) --nomd5 -d  mkdir -p `dirname $(PWD)`/build-fsl
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
