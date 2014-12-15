@@ -64,59 +64,15 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-$(NAME).spec: DESCRIPTION
+build:
 
-PACKAGES=6
 
-DESCRIPTION:
-	( \
-	  $(DESCRIBE_PKG) \
-	) > $@
-
-build: $(SRC_DIRS)
-	mkdir -p build-fsl
-	python fslinstaller.py -f $(SOURCE_PKG) --nomd5 -d  $(PWD)/build-fsl
-	@echo "::: Package $(NAME) build complete :::"
-	
 install::
+	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
-           packageCount=1; \
-           mkdir  -p $(REDHAT.ROOT)/src/build-fsl_$$packageCount; \
-           cd  build-fsl/fsl; \
-           find . ! -type d -exec ls -l {} \; >$(REDHAT.ROOT)/src/$$$$.tmp; \
-           find . \( -name .\* -a ! -type d \) -exec ls -l {} \; >>$(REDHAT.ROOT)/src/$$$$.tmp; \
-           sum=0; \
-           total=`du -b -s|awk '{print $$1}'`; \
-           maxPackageSize=$$(( $$total / $(PACKAGES) )); \
-           echo "MAX SIZE=$$maxPackageSize"; \
-           exec <$(REDHAT.ROOT)/src/$$$$.tmp; \
-           cat /dev/null > $(REDHAT.ROOT)/src/.files; \
-           while read line; do \
-               fileSize=`echo $$line |awk '{print $$5}'`; \
-               fileName=`echo $$line |awk '{print $$9}'`; \
-               sum=$$(( $$sum + $$fileSize )); \
-               if test $$sum -ge $$maxPackageSize; then \
-                  sum=$$(( $$sum - $$fileSize )); \
-                  echo "NEW PACKAGE: OLD SUM $$sum"; \
-                  tar cvf $(REDHAT.ROOT)/src/package.tar `cat $(REDHAT.ROOT)/src/.files`; \
-                  cd $(REDHAT.ROOT)/src/build-fsl_$$packageCount; \
-                  tar xvf $(REDHAT.ROOT)/src/package.tar; \
-                  cd $(PWD)/build-fsl/fsl; \
-                  sum=$$fileSize; \
-                  packageCount=$$(( $$packageCount + 1 )); \
-                  mkdir  -p $(REDHAT.ROOT)/src/build-fsl_$$packageCount; \
-                  cat /dev/null > $(REDHAT.ROOT)/src/.files; \
-               fi; \
-               echo $$fileName >> $(REDHAT.ROOT)/src/.files; \
-           done; \
-           tar cvf $(REDHAT.ROOT)/src/package.tar `cat $(REDHAT.ROOT)/src/.files`; \
-           cd $(REDHAT.ROOT)/src/build-fsl_$$packageCount; \
-           tar xvf $(REDHAT.ROOT)/src/package.tar; \
-	)
-	rm -f $(REDHAT.ROOT)/src/$$$$.tmp; \
-	rm -f $(REDHAT.ROOT)/src/.files; \
-	rm -f $(REDHAT.ROOT)/src/package.tar \
-	@echo "::: Package $(NAME) install complete :::"
+             cd  $(REDHAT.ROOT)/src/build-fsl_6; \
+             cp -r * -d $(ROOT)/$(PKGROOT) \
+        )
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION build-fsl
+	rm -rf $(SOURCE)
