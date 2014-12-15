@@ -13,6 +13,9 @@
 	</copyright>
 
 	<package>sdsc-fsl</package>
+	<package>sdsc-fsl_1</package>
+	<package>sdsc-fsl_2</package>
+	<package>sdsc-fsl_3</package>
 	<package>fsl-modules</package>
 
 </kickstart>
