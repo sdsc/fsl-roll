@@ -74,16 +74,15 @@ DESCRIPTION:
 	) > $@
 
 build: $(SRC_DIRS)
-	mkdir -p $(REDHAT.ROOT)/src/build-fsl
-	python fslinstaller.py -f $(SOURCE_PKG) --nomd5 -d  mkdir -p `dirname $(PWD)`/build-fsl
+	mkdir -p build-fsl
+	python fslinstaller.py -f $(SOURCE_PKG) --nomd5 -d  $(PWD)/build-fsl
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
 	( \
-           set -x; \
            packageCount=1; \
            mkdir  -p $(REDHAT.ROOT)/src/build-fsl_$$packageCount; \
-           cd  $(REDHAT.ROOT)/src/build-fsl/fsl; \
+           cd  build-fsl/fsl; \
            find . ! -type d -exec ls -l {} \; >$(REDHAT.ROOT)/src/$$$$.tmp; \
            find . \( -name .\* -a ! -type d \) -exec ls -l {} \; >>$(REDHAT.ROOT)/src/$$$$.tmp; \
            sum=0; \
@@ -100,9 +99,9 @@ install::
                   sum=$$(( $$sum - $$fileSize )); \
                   echo "NEW PACKAGE: OLD SUM $$sum"; \
                   tar cvf $(REDHAT.ROOT)/src/package.tar `cat $(REDHAT.ROOT)/src/.files`; \
-                  cd $(REDHAT.ROOT)/src/build-fsl_$$packageCount/fsl; \
+                  cd $(REDHAT.ROOT)/src/build-fsl_$$packageCount; \
                   tar xvf $(REDHAT.ROOT)/src/package.tar; \
-                  cd $(REDHAT.ROOT)/src/build-fsl; \
+                  cd $(PWD)/build-fsl/fsl; \
                   sum=$$fileSize; \
                   packageCount=$$(( $$packageCount + 1 )); \
                   mkdir  -p $(REDHAT.ROOT)/src/build-fsl_$$packageCount; \
@@ -111,10 +110,13 @@ install::
                echo $$fileName >> $(REDHAT.ROOT)/src/.files; \
            done; \
            tar cvf $(REDHAT.ROOT)/src/package.tar `cat $(REDHAT.ROOT)/src/.files`; \
-           cd $(REDHAT.ROOT)/src/build-fsl_$$packageCount/fsl; \
+           cd $(REDHAT.ROOT)/src/build-fsl_$$packageCount; \
            tar xvf $(REDHAT.ROOT)/src/package.tar; \
 	)
+	rm -f $(REDHAT.ROOT)/src/$$$$.tmp; \
+	rm -f $(REDHAT.ROOT)/src/.files; \
+	rm -f $(REDHAT.ROOT)/src/package.tar \
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION
+	rm -rf $(SOURCE_DIR) DESCRIPTION build-fsl
