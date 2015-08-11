@@ -1,5 +1,7 @@
 # SDSC "fsl" roll
 
+The fsl-roll is deprecated; SDSC no longer supports or develops it.
+
 ## Overview
 
 This roll bundles... fsl
